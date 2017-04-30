@@ -1,3 +1,6 @@
 .ipynb_checkpoints/
 vehicles.zip
 vehicles/
+__MACOSX/
+non-vehicles.zip
+non-vehicles/
