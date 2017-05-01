@@ -4,3 +4,4 @@ vehicles/
 __MACOSX/
 non-vehicles.zip
 non-vehicles/
+.DS_Store
