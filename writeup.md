@@ -1,8 +1,3 @@
-##Writeup Template
-###You can use this file as a template for your writeup if you want to submit it as a markdown file, but feel free to use some other method and submit a pdf if you prefer.
-
----
-
 **Vehicle Detection Project**
 
 The goals / steps of this project are the following:
@@ -24,60 +19,69 @@ The goals / steps of this project are the following:
 [image7]: ./examples/output_bboxes.png
 [video1]: ./project_video.mp4
 
-## [Rubric](https://review.udacity.com/#!/rubrics/513/view) Points
-###Here I will consider the rubric points individually and describe how I addressed each point in my implementation.  
+## [Rubric](https://review.udacity.com/#!/rubrics/513/view) Points 
 
 ---
 ###Writeup / README
 
-####1. Provide a Writeup / README that includes all the rubric points and how you addressed each one.  You can submit your writeup as markdown or pdf.  [Here](https://github.com/udacity/CarND-Vehicle-Detection/blob/master/writeup_template.md) is a template writeup for this project you can use as a guide and a starting point.  
+Used `Vehicle Detection` notebook as the sandbox to test out ideas, parameters and etc. Project video is processed in `VehicleDetectionSubmission` notebook.
 
-You're reading it!
 
 ###Histogram of Oriented Gradients (HOG)
 
 ####1. Explain how (and identify where in your code) you extracted HOG features from the training images.
 
-The code for this step is contained in the first code cell of the IPython notebook (or in lines # through # of the file called `some_file.py`).  
+The code for this step is contained in the fourth code cell of the `Vehicle Detection` notebook 
 
-I started by reading in all the `vehicle` and `non-vehicle` images.  Here is an example of one of each of the `vehicle` and `non-vehicle` classes:
+I started by reading in all the `vehicle` and `non-vehicle` images.  I then explored different color spaces and different `skimage.hog()` parameters (`orientations`, `pixels_per_cell`, and `cells_per_block`).  I grabbed a random image from each of the two classes and displayed them to get a feel for what the `skimage.hog()` output looks like.
 
-![alt text][image1]
-
-I then explored different color spaces and different `skimage.hog()` parameters (`orientations`, `pixels_per_cell`, and `cells_per_block`).  I grabbed random images from each of the two classes and displayed them to get a feel for what the `skimage.hog()` output looks like.
-
-Here is an example using the `YCrCb` color space and HOG parameters of `orientations=8`, `pixels_per_cell=(8, 8)` and `cells_per_block=(2, 2)`:
-
-
-![alt text][image2]
+Please see the output of the fourth cell of the `Vehicle Detection` for a random car/not car and the corresponding `hog_features` images
 
 ####2. Explain how you settled on your final choice of HOG parameters.
+These are the parameters I ended up with:
+* color_space = 'YCrCb' #RGB, HSV, LUV, HLS, YUV, YCrCb
+* orient = 9
+* pix_per_cell = 8
+* cell_per_block = 2
+* hog_channel = 'ALL' #0,1,2 or 'ALL'
+* spatial_size=(32,32) #Spatial binning dimensions
+* hist_bins=32 # Number of histogram bins
+* spatial_feat = True
+* hist_feat = True
+* hog_feat = True
 
-I tried various combinations of parameters and...
+I tried various combinations of parameters and got the best results with YCrCb color space and using all for the hog channel.
+Spatial size of 32x32 provided a nice balance of performance and accuracy.
 
 ####3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
 
-I trained a linear SVM using...
+I trained a linear SVM using spatial, color histogram and hog features; transformed the training features with the StandardScaler.
+
+Here is some diagnostic info from the `Vehicle Detection` notebook's fifth cell in which I trained the classifier.
+Using: 9  orientations, 8  pixels per cell, 2  cells per block, 32  histogram bins and  (32, 32)  spatial sampling
+Feature vector length: 8460
+29.71  Seconds to train SVC
+Test accuracy of SVC:  0.9899
 
 ###Sliding Window Search
 
 ####1. Describe how (and identify where in your code) you implemented a sliding window search.  How did you decide what scales to search and how much to overlap windows?
 
-I decided to search random window positions at random scales all over the image and came up with this (ok just kidding I didn't actually ;):
+Used the `slide_window` function in `Vehicle Detection` notebook's sixth cell to implement window search. Started by providing reasonable ystart/stop values to do the window search in the lower portion of the image. Picked window size and overlap values after a few trials.
 
-![alt text][image3]
 
 ####2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
 
-Ultimately I searched on two scales using YCrCb 3-channel HOG features plus spatially binned color and histograms of color in the feature vector, which provided a nice result.  Here are some example images:
+Ultimately I searched on two scales using YCrCb 3-channel HOG features plus spatially binned color and histograms of color in the feature vector, which provided a nice result. 
 
-![alt text][image4]
+I processed the test images using the pipeline in `Vehicle Detection` notebook's sixth cell. In the output you can see the bounded boxes drawn on each image.
+
 ---
 
 ### Video Implementation
 
 ####1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (somewhat wobbly or unstable bounding boxes are ok as long as you are identifying the vehicles most of the time with minimal false positives.)
-Here's a [link to my video result](./project_video.mp4)
+Here's a [link to my video result](./processed_project_video.mp4)
 
 
 ####2. Describe how (and identify where in your code) you implemented some kind of filter for false positives and some method for combining overlapping bounding boxes.
