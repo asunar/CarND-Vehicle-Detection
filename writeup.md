@@ -59,9 +59,10 @@ I trained a linear SVM using spatial, color histogram and hog features; transfor
 
 Here is some diagnostic info from the `Vehicle Detection` notebook's fifth cell in which I trained the classifier.
 Using: 9  orientations, 8  pixels per cell, 2  cells per block, 32  histogram bins and  (32, 32)  spatial sampling
-Feature vector length: 8460
-29.71  Seconds to train SVC
-Test accuracy of SVC:  0.9899
+
+* Feature vector length: 8460
+* 29.71  Seconds to train SVC
+* Test accuracy of SVC:  0.9899
 
 ###Sliding Window Search
 
@@ -88,17 +89,10 @@ Here's a [link to my video result](./processed_project_video.mp4)
 
 I recorded the positions of positive detections in each frame of the video.  From the positive detections I created a heatmap and then thresholded that map to identify vehicle positions.  I then used `scipy.ndimage.measurements.label()` to identify individual blobs in the heatmap.  I then assumed each blob corresponded to a vehicle.  I constructed bounding boxes to cover the area of each blob detected.  
 
-Here's an example result showing the heatmap from a series of frames of video, the result of `scipy.ndimage.measurements.label()` and the bounding boxes then overlaid on the last frame of video:
+In `Vehicle Detection` notebook's eighth cell, you can see the six test images with bounded boxes with their corresponding heatmaps. Applied a threshold to filter out the false positives in the eleventh cell.
 
-### Here are six frames and their corresponding heatmaps:
 
-![alt text][image5]
-
-### Here is the output of `scipy.ndimage.measurements.label()` on the integrated heatmap from all six frames:
-![alt text][image6]
-
-### Here the resulting bounding boxes are drawn onto the last frame in the series:
-![alt text][image7]
+In `VehicleDetectionSubmission` notebook's last cell processed the video by processing each frame with `vehicle_detector`, used a frame queue to smooth out boxes between frames.
 
 
 
