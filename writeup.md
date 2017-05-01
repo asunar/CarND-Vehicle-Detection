@@ -102,5 +102,6 @@ In `VehicleDetectionSubmission` notebook's last cell processed the video by proc
 
 ####1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
 
-Here I'll talk about the approach I took, what techniques I used, what worked and why, where the pipeline might fail and how I might improve it if I were going to pursue this project further.  
+Getting the hog features of the entire images and downsampling were challenging. Spent quite a bit of time debugging to draw the boxes in the correct coordinates. Personally, I'm not very happy with performance of the pipeline. I would like to try tuning the parameters a little more to improve the perf without sacrificing accuracy.
 
+Also, I read that using deep learning to determine the vehicles in the images may be more performant and accurate. Several people called the techniques used in this project vehicle detection with "traditional" techniques. It will be interesting to see if more modern techniques like deep learning will provide a better alternative.
